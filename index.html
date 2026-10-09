@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>A little something for you</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg1:#ffe3e0;--bg2:#ffd0d9;--glow:#ffe9c7;--ink:#6b2a3f;--pink:#f48fb1;--deep:#e0527f;--paper:#fffaf3;--env:#ffc2d1;--env2:#ffa9c0;--shadow:rgba(180,70,100,.28);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg1:#3a1b26;--bg2:#4d2133;--glow:#6a3a2e;--ink:#ffe3ea;--paper:#fff1e6;--env:#e98aa6;--env2:#d8708f;--shadow:rgba(0,0,0,.45)}}
+:root[data-theme="dark"]{--bg1:#3a1b26;--bg2:#4d2133;--glow:#6a3a2e;--ink:#ffe3ea;--paper:#fff1e6;--env:#e98aa6;--env2:#d8708f;--shadow:rgba(0,0,0,.45)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font-family:'Fredoka',system-ui,sans-serif;color:var(--ink);overflow:hidden;
+background:radial-gradient(circle at 50% 8%,var(--glow) 0,transparent 45%),radial-gradient(circle at 85% 95%,var(--glow) 0,transparent 40%),linear-gradient(160deg,var(--bg1),var(--bg2));background-color:var(--bg1)}
+.corner{position:fixed;width:min(46vw,260px);opacity:.9;pointer-events:none;z-index:0}
+.c1{top:-20px;left:-24px}.c2{bottom:-20px;right:-24px;transform:rotate(180deg)}
+#petals{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+.petal{position:absolute;top:-30px;width:14px;height:18px;background:var(--pink);border-radius:80% 0 80% 0;opacity:.7;animation:fall linear forwards}
+@keyframes fall{to{transform:translate(var(--dx),110vh) rotate(var(--r));}}
+.screen{position:fixed;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;transition:opacity .8s,transform .8s}
+.screen.hide{opacity:0;transform:scale(1.08);pointer-events:none}
+h1{font-size:clamp(1.8rem,6vw,2.8rem);margin:.4em 0 .2em;font-weight:600}
+p.sub{margin:0 0 1.2em;font-size:1.1rem;opacity:.85;max-width:30ch}
+.hand{font-family:'Caveat',cursive}
+.btn{font:inherit;font-weight:600;border:0;cursor:pointer;color:#fff;background:var(--deep);padding:.8em 1.6em;border-radius:999px;box-shadow:0 6px 0 #b83a64,0 12px 20px var(--shadow);transition:transform .15s}
+.btn:hover{transform:translateY(-2px)}.btn:active{transform:translateY(4px);box-shadow:0 2px 0 #b83a64}
+.btn.soft{background:#fff;color:var(--deep);box-shadow:0 6px 0 #f3b9cb,0 12px 20px var(--shadow)}
+:focus-visible{outline:3px solid var(--deep);outline-offset:3px}
+/* bud */
+#bud{width:min(62vw,260px);height:auto;cursor:pointer;background:none;border:0;padding:0;animation:sway 3s ease-in-out infinite}
+@keyframes sway{50%{transform:rotate(3deg) translateY(-6px)}}
+#bud .p{transform-origin:100px 100px;transition:transform 1.1s cubic-bezier(.2,1.4,.4,1)}
+#bud.open .p{transform:rotate(var(--o)) translateY(-8px) scale(1.12)}
+#bud .core{transition:transform .8s;transform-origin:100px 100px}#bud.open .core{transform:scale(1.2)}
+/* envelopes */
+#env-screen{opacity:0;pointer-events:none}
+#env-screen.show{opacity:1;pointer-events:auto}
+.row{display:flex;gap:clamp(14px,4vw,40px);flex-wrap:wrap;justify-content:center;margin-top:10px}
+.env{background:none;border:0;padding:0;cursor:pointer;font:inherit;color:inherit;display:flex;flex-direction:column;align-items:center;gap:12px;transition:transform .25s}
+.env:hover{transform:translateY(-8px) rotate(-2deg)}
+.env .body{position:relative;width:min(70vw,190px);aspect-ratio:1.5;background:linear-gradient(var(--env),var(--env2));border-radius:10px;box-shadow:0 10px 22px var(--shadow)}
+.env .body:before{content:"";position:absolute;inset:0;border-radius:10px;background:linear-gradient(to top right,transparent 49%,rgba(255,255,255,.35) 50%) left/50% 100% no-repeat,linear-gradient(to top left,transparent 49%,rgba(255,255,255,.35) 50%) right/50% 100% no-repeat}
+.env .flap{position:absolute;top:0;left:0;right:0;height:58%;background:var(--env2);clip-path:polygon(0 0,100% 0,50% 100%);border-radius:10px 10px 0 0;filter:brightness(1.04)}
+.env .seal{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);font-size:1.7rem;z-index:2;animation:beat 1.6s infinite}
+@keyframes beat{50%{transform:translate(-50%,-50%) scale(1.18)}}
+.env.read .seal{animation:none;opacity:.5}
+.env .tag{font-family:'Caveat',cursive;font-size:1.5rem;font-weight:700}
+.hint{margin-top:22px;font-size:.95rem;opacity:.75}
+/* modal */
+#modal{position:fixed;inset:0;z-index:5;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(120,30,60,.35);backdrop-filter:blur(4px)}
+#modal.show{display:flex}
+.letter{position:relative;width:min(92vw,460px);max-height:86vh;overflow:auto;background:var(--paper);color:#5a2a38;border-radius:14px;padding:34px 28px 26px;box-shadow:0 20px 50px var(--shadow);animation:pop .55s cubic-bezier(.2,1.3,.4,1);background-image:repeating-linear-gradient(transparent 0 33px,#f6d5de 33px 34px)}
+@keyframes pop{from{transform:translateY(60px) scale(.7) rotate(-4deg);opacity:0}}
+.letter .tape{position:absolute;top:-12px;left:50%;width:90px;height:24px;transform:translateX(-50%) rotate(-3deg);background:rgba(244,143,177,.6);border-radius:4px}
+.letter h2{font-family:'Caveat',cursive;font-size:2.1rem;margin:0 0 6px;color:var(--deep)}
+.letter .msg{font-family:'Caveat',cursive;font-size:1.65rem;line-height:34px;white-space:pre-line;margin:0}
+.letter .from{font-family:'Caveat',cursive;font-size:1.8rem;text-align:right;margin:10px 0 0;color:var(--deep)}
+.x{position:absolute;top:8px;right:10px;border:0;background:none;font-size:1.6rem;cursor:pointer;color:var(--deep)}
+.ans{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:20px}
+.reply{font-family:'Caveat',cursive;font-size:1.7rem;text-align:center;margin-top:14px;color:var(--deep);min-height:1em}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <symbol id="flower" viewBox="0 0 100 100">
+   <g fill="#f78fb3"><ellipse cx="50" cy="22" rx="14" ry="20"/><ellipse cx="50" cy="22" rx="14" ry="20" transform="rotate(72 50 50)"/><ellipse cx="50" cy="22" rx="14" ry="20" transform="rotate(144 50 50)"/><ellipse cx="50" cy="22" rx="14" ry="20" transform="rotate(216 50 50)"/><ellipse cx="50" cy="22" rx="14" ry="20" transform="rotate(288 50 50)"/></g>
+   <circle cx="50" cy="50" r="11" fill="#ffd36e"/><circle cx="46" cy="47" r="3" fill="#fff4c4"/>
+  </symbol>
+ </defs>
+</svg>
+
+<svg class="corner c1" viewBox="0 0 260 260" aria-hidden="true">
+ <path d="M10 250 C60 150 90 110 190 20" stroke="#8fbf8a" stroke-width="5" fill="none" stroke-linecap="round"/>
+ <ellipse cx="70" cy="170" rx="22" ry="10" fill="#9ccc96" transform="rotate(-50 70 170)"/><ellipse cx="120" cy="105" rx="22" ry="10" fill="#9ccc96" transform="rotate(-45 120 105)"/>
+ <use href="#flower" x="10" y="20" width="90" height="90"/><use href="#flower" x="130" y="80" width="64" height="64"/><use href="#flower" x="20" y="150" width="56" height="56"/><use href="#flower" x="170" y="0" width="60" height="60"/>
+</svg>
+<svg class="corner c2" viewBox="0 0 260 260" aria-hidden="true">
+ <path d="M10 250 C60 150 90 110 190 20" stroke="#8fbf8a" stroke-width="5" fill="none" stroke-linecap="round"/>
+ <ellipse cx="70" cy="170" rx="22" ry="10" fill="#9ccc96" transform="rotate(-50 70 170)"/><ellipse cx="120" cy="105" rx="22" ry="10" fill="#9ccc96" transform="rotate(-45 120 105)"/>
+ <use href="#flower" x="10" y="20" width="90" height="90"/><use href="#flower" x="130" y="80" width="64" height="64"/><use href="#flower" x="20" y="150" width="56" height="56"/><use href="#flower" x="170" y="0" width="60" height="60"/>
+</svg>
+<div id="petals" aria-hidden="true"></div>
+
+<main class="screen" id="entry">
+ <button id="bud" aria-label="Tap the flower bud to open it">
+  <svg viewBox="0 0 200 240" width="100%">
+   <path d="M100 130 C96 180 104 210 100 238" stroke="#8fbf8a" stroke-width="7" fill="none" stroke-linecap="round"/>
+   <ellipse cx="72" cy="196" rx="26" ry="10" fill="#9ccc96" transform="rotate(-30 72 196)"/>
+   <ellipse cx="130" cy="176" rx="24" ry="9" fill="#9ccc96" transform="rotate(28 130 176)"/>
+   <g class="p" style="--o:0deg"><ellipse cx="100" cy="64" rx="26" ry="42" fill="#f78fb3"/></g>
+   <g class="p" style="--o:72deg"><ellipse cx="100" cy="64" rx="26" ry="42" fill="#f9a3c1"/></g>
+   <g class="p" style="--o:144deg"><ellipse cx="100" cy="64" rx="26" ry="42" fill="#f78fb3"/></g>
+   <g class="p" style="--o:216deg"><ellipse cx="100" cy="64" rx="26" ry="42" fill="#f9a3c1"/></g>
+   <g class="p" style="--o:288deg"><ellipse cx="100" cy="64" rx="26" ry="42" fill="#f78fb3"/></g>
+   <g class="core"><circle cx="100" cy="100" r="17" fill="#ffd36e"/><circle cx="94" cy="95" r="5" fill="#fff4c4"/></g>
+  </svg>
+ </button>
+ <h1 id="entryTitle">Hi, bebe I hope its not yet late but I've made something for you.</h1>
+ <p class="sub" id="entryHint">Tap it po and watch it bloom.</p>
+ <button class="btn" id="go" style="display:none">Clickk me poo.</button>
+</main>
+
+<main class="screen" id="env-screen">
+ <h1 class="hand" style="font-size:clamp(2.2rem,8vw,3.4rem)">Hi bebe I have prepared some 3 letters for you na hindi ko masabi sayo.</h1>
+ <p class="sub">recommending to read them in order din po</p>
+ <div class="row" id="row"></div>
+ <div class="hint" id="hint"></div>
+</main>
+
+<div id="modal" role="dialog" aria-modal="true" aria-labelledby="lTitle">
+ <div class="letter" id="letter">
+  <div class="tape"></div>
+  <button class="x" id="close" aria-label="Close letter">&times;</button>
+  <h2 id="lTitle"></h2>
+  <p class="msg" id="lMsg"></p>
+  <p class="from" id="lFrom"></p>
+  <div class="ans" id="ans"></div>
+  <div class="reply" id="reply" aria-live="polite"></div>
+ </div>
+</div>
+
+<script>
+/* ===== EDIT THIS PART: put your own words here ===== */
+const CONFIG = {
+  to: "Dear you",
+  letters: [
+    { tag: "Read me first", title: "Hi po Bebe",
+      message: "Before anything else po, I want to thank you po for taking the time to read these letters, so much appreciated.\n\nI just want to open up on what I feel to you, and each day pass-by, it keeps building and growing.\n\nSo yeah, I've been carrying something in my heart for quite some time, and I've finally gathered enough courage to put it into words.\n\nThe truth is, you've become someone very special to me. It didn't happen overnight. It happened little by little starting from the day you told you liked me, then through the conversations we've shared, and the things about you that I've learned to appreciate.\n\nFor a while, I really tried talking to myself and making everything sure that what I felt was pure emotion, nothing rushed, and I really took the time so that I can also prevent giving something na hindi ko naman ipagpapatuloy kapag tumagal. Then the more time passed, the more I realized din na my feelings had grown deeper pa.\n\nI know this letter may come as random, and I don't want it to make it awkward and uncomfortable. I'm not writing this to pressure you or expect an immediate answer. I simply believe that sincerity deserves honesty.\n\nSo please allow me to say my confession;\n\nI love you.\n\nI know po na those words hold a lot of weight, which is why I don't say them always. I didn't fall for you all at once, it happened po through the conversations, things na we shared about, and little things that made me admire you more each day. and yun, it started as admiration slowly became affection, and before I knew it at first nahihiya pa ako but then I was really sure na, I had fallen completely in love with you.\n\nI've made sure din to understand my feelings carefully, and to be honest, the more I got to know you, the more certain I became of what my heart was telling me.\n\nI know those three words may be deep, but they carry all the sincerity I have. I wanted you to know the truth on what I feel and I want it to say it directly rather than saying it without clearly stating what I mean.\n\nAnd I am grateful ri, because getting to know you has already been something meaningful to me." },
+    { tag: "Then me", title: "What I like about you",
+      message: "Hi po uli bebe hehe,\n\nI'm not great at saying this out loud, so I made you this instead.\n\nNow that I've shared po what I've been keeping in my heart, I would really love to share also why.\n\nWell first po, I really want to share how really sincere I am and I did not do this to convince you to feel something for me. It's simply about telling you what I genuinely appreciate about you.\n\nI admire po the way you carry yourself Kahit na gaano kabigat agenda mo for school and even more on sa personal life mo. People don't really have this even na its free but I really admire your kindness, the way you treat people Lalo na nung Nakita ko yung mga pics while doing your service, and the little things you probably don't even notice about yourself na sinasabi mong (hindi naman) everytime na I compliment you on something.\n\nYou've really inspired me to the point na I must do really do well for myself and in ways you may never realize. Every simple conversation with you din would really brighten my day like what I've say always Kahit gaano pa kaikli. Sometimes just seeing your determination, your smile, or how you do really leaves a lasting impression on me and makes me function to the point na I have to do better.\n\nNot because you're perfect, but because you're genuine.\n\n\As my feelings grew, I also spent time reflecting on my intentions. I realized that I don't want to admire you from afar without purpose. I want my feelings to be guided by respect, honesty, and patience and I would really risk it all for you.\n\nThat's why I chose to code these letters.\n\nNot because I'm certain of the outcome.\n\nBut because I want you to know that my intentions are pure and sincere.\n\nAnd sincerity, I believe, should never be hidden." },
+
+      
+    { tag: "Last one", title: "Can I ask you something?", final: true,
+      message: "hi bebe, last na\n\nI've a question that I really wanted to ask\n\nI don't want to rush anything.\n\nAnd ayoko naman po na isipin mo araw araw regarding sa situation natin.\n\nWhat I want is the opportunity to know you better, spend time with you, and show you through my actions that my intentions are genuine.\n\nThat's why I'd like to respectfully ask po na\n\nMay I have your permission to court you?\n\nI know its late and I had all the time to ensure na I will have the moment or opportunity to express my feelings properly and also to ask you this important question.\n\nThank you for reading kahit na ganon yung message mo, I understand it totally and its really my fault.\n\nAnd thank you for being someone worth writing three letters for." }
+  ],
+  yesReply: "Yay! You just made my whole year 🌸",
+  thinkReply: "Take all the time you need. I'll be here, no pressure 💗"
+};
+/* ================================================== */
+
+const $=id=>document.getElementById(id);
+const store=(()=>{try{return window.localStorage}catch(e){return null}})();
+
+// falling petals
+function petals(n=1,burst=false){
+  const box=$('petals');
+  for(let i=0;i<n;i++){
+    const p=document.createElement('div');p.className='petal';
+    const d=burst?3+Math.random()*2:8+Math.random()*8;
+    p.style.left=(Math.random()*100)+'vw';
+    p.style.setProperty('--dx',(Math.random()*140-70)+'px');
+    p.style.setProperty('--r',(Math.random()*720-360)+'deg');
+    p.style.animationDuration=d+'s';
+    p.style.background=['#f78fb3','#ffb3c6','#ffd0dc','#ffc98f'][Math.floor(Math.random()*4)];
+    box.appendChild(p);setTimeout(()=>p.remove(),d*1000);
+  }
+}
+setInterval(()=>petals(1),1800);
+
+// entry bloom
+$('bud').addEventListener('click',()=>{
+  $('bud').classList.add('open');petals(24,true);
+  $('entryTitle').textContent='It bloomed hehe! 🌷';
+  $('entryHint').textContent='I have something na ginawa ko po for you';
+  $('go').style.display='inline-block';
+  $('bud').style.animation='none';
+},{once:true});
+$('go').addEventListener('click',()=>{
+  $('entry').classList.add('hide');
+  $('env-screen').classList.add('show');
+});
+
+// envelopes
+const read=new Set();
+const row=$('row');
+CONFIG.letters.forEach((l,i)=>{
+  const b=document.createElement('button');b.className='env';
+  b.setAttribute('aria-label','Open letter: '+l.tag);
+  b.innerHTML='<div class="body"><div class="flap"></div><div class="seal">💗</div></div><span class="tag">'+l.tag+'</span>';
+  b.onclick=()=>openLetter(i,b);
+  row.appendChild(b);
+});
+function updateHint(){
+  $('hint').textContent=read.size===CONFIG.letters.length?'You opened them all 💐':read.size+' of '+CONFIG.letters.length+' opened';
+}
+updateHint();
+
+let lastFocus=null;
+function openLetter(i,btn){
+  const l=CONFIG.letters[i];lastFocus=btn;
+  $('lTitle').textContent=l.title;
+  $('lMsg').textContent=l.message;
+  $('lFrom').textContent=CONFIG.from;
+  $('reply').textContent='';
+  const ans=$('ans');ans.innerHTML='';
+  if(l.final){
+    const y=document.createElement('button');y.className='btn';y.textContent='Yes, you may 💕';
+    const t=document.createElement('button');t.className='btn soft';t.textContent='Let me think about it';
+    y.onclick=()=>{$('reply').textContent=CONFIG.yesReply;petals(60,true);ans.innerHTML='';};
+    t.onclick=()=>{$('reply').textContent=CONFIG.thinkReply;ans.innerHTML='';};
+    ans.append(y,t);
+  }
+  btn.classList.add('read');read.add(i);updateHint();
+  $('modal').classList.add('show');petals(10,true);
+  $('close').focus();
+}
+function closeLetter(){
+  $('modal').classList.remove('show');
+  if(lastFocus)lastFocus.focus();
+}
+$('close').onclick=closeLetter;
+$('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeLetter()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLetter()});
+</script>
+</body>
+</html> 
